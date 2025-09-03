@@ -1,10 +1,10 @@
 import styled from "styled-components";
-function MovieCard({ title, vote_average, backdrop_path, onClick }) {
+function MovieCard({ title, vote_average, poster_path, onClick }) {
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
-  backdrop_path = imageBaseUrl + backdrop_path;
+  poster_path = imageBaseUrl + poster_path;
   return (
     <Card onClick={onClick}>
-      <Img src={backdrop_path} alt={title} />
+      <Img src={poster_path} alt={title} />
       <Title>{title}</Title>
       <Average>평점 : {vote_average}</Average>
     </Card>

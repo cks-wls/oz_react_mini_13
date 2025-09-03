@@ -2,12 +2,13 @@ export default async function getMovieList() {
   try {
     const response = await fetch("/data/movieListData.json");
     const data = await response.json();
+
     const movies = data.results.map(
-      ({ id, title, vote_average, backdrop_path }) => ({
+      ({ id, title, vote_average, poster_path }) => ({
         id,
         title,
         vote_average,
-        backdrop_path,
+        poster_path,
       })
     );
     return movies;

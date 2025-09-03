@@ -22,7 +22,7 @@ function Main() {
           key={val.id}
           title={val.title}
           vote_average={val.vote_average}
-          backdrop_path={val.backdrop_path}
+          poster_path={val.poster_path}
           onClick={() => {
             navigate(`/movies/${val.id}`);
           }}
