@@ -1,8 +1,10 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 function NavBar() {
+  const navigate = useNavigate();
   return (
     <Container>
-      <Title>OZ MOVIE</Title>
+      <Title onClick={() => navigate("/")}>OZ MOVIE</Title>
       <Search placeholder="   검색어를 입력해주세요" />
       <LoginContainer>
         <Button>로그인</Button>
@@ -22,6 +24,7 @@ const Container = styled.div`
 `;
 const Title = styled.h1`
   color: white;
+  cursor: pointer;
 `;
 const Search = styled.input`
   width: 300px;
