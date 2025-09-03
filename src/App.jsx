@@ -1,19 +1,12 @@
 import { createGlobalStyle } from "styled-components";
-import { Routes, Route } from "react-router-dom";
-import Main from "@/pages/main";
-import Layout from "@/pages/layout";
-import MovieDetail from "@/components/main/MovieDetail";
+import AppRoutes from "@/routes/AppRoutes";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Main />} />
-          <Route path="/movies/:movieId" element={<MovieDetail />} />
-        </Route>
-      </Routes>
+      <AppRoutes />
     </>
   );
 }
