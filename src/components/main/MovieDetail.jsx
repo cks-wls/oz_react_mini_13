@@ -32,7 +32,7 @@ function MovieDetail() {
         <Img src={pathUrl} alt={movieDetail.title} />
         <Text>
           <Title>{movieDetail.title}</Title>
-          <Average>평점 : {movieDetail.average}</Average>
+          <Average>⭐️ {movieDetail.average}</Average>
           <GenreCont>
             {movieDetail.genres.map((val) => {
               return <Genre key={val}>{val}</Genre>;
@@ -50,7 +50,7 @@ const Container = styled.div`
   display: flex;
   margin: 30px 5%;
   padding: 40px;
-  gap: 30px;
+  gap: 40px;
   box-shadow: 0 8px 24px #0000001a;
   border-radius: 10px;
 `;
@@ -62,7 +62,7 @@ const Img = styled.img`
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
 `;
 const Title = styled.h2`
   font-size: 2.4rem;
@@ -78,7 +78,9 @@ const GenreCont = styled.div`
   gap: 10px;
 `;
 const Genre = styled.p`
-  padding: 5px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  padding: 6px 14px;
+  background-color: #e6f0ff;
+  color: #1a3c6b;
+  font-size: 13px;
+  border-radius: 20px;
 `;
