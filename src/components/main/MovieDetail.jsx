@@ -31,7 +31,7 @@ function MovieDetail() {
     // movieDetail이 설정되고 ID가 일치하는 경우
     return (
       <Container
-        $border={mode === "light" ? "none" : "1px solid white"}
+        $border={mode === "light" ? "1px solid lightgray" : "1px solid white"}
         $boxshadow={
           mode === "light" ? "0 8px 24px #0000001a" : "0 0 24px white"
         }
