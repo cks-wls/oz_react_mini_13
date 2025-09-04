@@ -1,6 +1,7 @@
 import NavBar from "@/components/common/NavBar";
 import { Outlet } from "react-router-dom";
-function Latout() {
+
+function Layout() {
   return (
     <>
       <NavBar />
@@ -8,4 +9,4 @@ function Latout() {
     </>
   );
 }
-export default Latout;
+export default Layout;
