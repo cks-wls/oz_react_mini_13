@@ -8,7 +8,7 @@ function MovieCard({ title, vote_average, poster_path, onClick }) {
   return (
     <Card
       onClick={onClick}
-      $border={mode === "light" ? "none" : "1px solid white"}
+      $border={mode === "light" ? "1px solid lightgray" : "1px solid white"}
       $boxShadow={
         mode === "light" ? " 0 10px 12px #0000001a" : "0 0 12px white"
       }
