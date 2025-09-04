@@ -1,23 +1,22 @@
 import styled from "styled-components";
 import moon from "@/assets/icons/moon.png";
 import sun from "@/assets/icons/sun.png";
+import ModeContext from "@/context/ModeContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext } from "react";
 function NavBar() {
+  const { mode, toggleMode } = useContext(ModeContext);
   const navigate = useNavigate();
-  const [mode, setMode] = useState(true);
   return (
-    <Container>
+    <Container $bgcolor={mode === "light" ? "black" : "#1c1c1c"}>
       <Title onClick={() => navigate("/")}>OZ MOVIE</Title>
       <Search placeholder="검색어를 입력해주세요" />
       <LoginContainer>
         <Mode
-          onClick={() => {
-            setMode(!mode);
-          }}
-          $color={mode ? "white" : "black"}
+          onClick={toggleMode}
+          $color={mode === "light" ? "white" : "black"}
         >
-          <Img src={mode ? moon : sun} alt="modeIcon" />
+          <Img src={mode === "light" ? moon : sun} alt="modeIcon" />
         </Mode>
         <Button>로그인</Button>
         <Button>회원가입</Button>
@@ -33,6 +32,7 @@ const Container = styled.div`
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
+  background-color: ${(props) => props.$bgcolor};
 `;
 const Title = styled.h1`
   color: white;
@@ -56,6 +56,7 @@ const Mode = styled.button`
   align-items: center;
   border: 1px solid white;
   margin-right: 10px;
+  cursor: pointer;
 `;
 const Img = styled.img`
   width: 20px;

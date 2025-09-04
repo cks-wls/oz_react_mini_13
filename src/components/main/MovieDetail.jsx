@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import getMovieDetail from "@/lib/api/getMovieDetail";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import ModeContext from "@/context/ModeContext";
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -10,6 +11,7 @@ function MovieDetail() {
   const [error, setError] = useState(false);
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
   const pathUrl = movieDetail ? imageBaseUrl + movieDetail.path : "";
+  const { mode } = useContext(ModeContext);
   useEffect(() => {
     getMovieDetail(movieId)
       .then((data) => {
@@ -28,17 +30,28 @@ function MovieDetail() {
   else {
     // movieDetail이 설정되고 ID가 일치하는 경우
     return (
-      <Container>
+      <Container
+        $border={mode === "light" ? "none" : "1px solid white"}
+        $boxshadow={
+          mode === "light" ? "0 8px 24px #0000001a" : "0 0 24px white"
+        }
+      >
         <Img src={pathUrl} alt={movieDetail.title} />
         <Text>
-          <Title>{movieDetail.title}</Title>
-          <Average>⭐️ {movieDetail.average}</Average>
+          <Title $color={mode === "light" ? "black" : "white"}>
+            {movieDetail.title}
+          </Title>
+          <Average $color={mode === "light" ? "black" : "white"}>
+            ⭐️ {movieDetail.average}
+          </Average>
           <GenreCont>
             {movieDetail.genres.map((val) => {
               return <Genre key={val}>{val}</Genre>;
             })}
           </GenreCont>
-          <Script>{movieDetail.overView}</Script>
+          <Script $color={mode === "light" ? "black" : "white"}>
+            {movieDetail.overView}
+          </Script>
         </Text>
       </Container>
     );
@@ -51,8 +64,9 @@ const Container = styled.div`
   margin: 30px 5%;
   padding: 40px;
   gap: 40px;
-  box-shadow: 0 8px 24px #0000001a;
+  box-shadow: ${(props) => props.$boxshadow};
   border-radius: 10px;
+  border: ${(props) => props.$border};
 `;
 const Img = styled.img`
   width: 300px;
@@ -66,12 +80,15 @@ const Text = styled.div`
 `;
 const Title = styled.h2`
   font-size: 2.4rem;
+  color: ${(props) => props.$color};
 `;
 const Average = styled.p`
   font-size: 1.2rem;
+  color: ${(props) => props.$color};
 `;
 const Script = styled.p`
   font-size: 1rem;
+  color: ${(props) => props.$color};
 `;
 const GenreCont = styled.div`
   display: flex;
