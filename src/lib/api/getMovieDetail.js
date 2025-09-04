@@ -3,7 +3,7 @@ export default async function getMovieList() {
     const response = await fetch("/data/movieDetailData.json");
     const data = await response.json();
     const id = Number(data.id);
-    const path = data.backdrop_path;
+    const path = data.poster_path;
     const title = data.title;
     const average = data.vote_average;
     const overView = data.overview;
