@@ -1,65 +1,101 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import getMovieDetail from "@/lib/api/getMovieDetail";
+import getMovieGenres from "@/lib/api/getMovieGenres";
 import { useContext, useEffect, useState } from "react";
 import ModeContext from "@/context/ModeContext";
+import DetailImgSkeleton from "@/components/common/DetailImgSkeleton";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
 
 function MovieDetail() {
   const { movieId } = useParams();
   const numMovieId = Number(movieId);
-  const [movieDetail, setMovieDetail] = useState(null);
+  const [movieDetail, setMovieDetail] = useState([]);
+  const [genre, setGenre] = useState([]);
   const [error, setError] = useState(false);
+  const [imgLoading, setImgLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
-  const pathUrl = movieDetail ? imageBaseUrl + movieDetail.path : "";
   const { mode } = useContext(ModeContext);
+
   useEffect(() => {
     getMovieDetail(movieId)
       .then((data) => {
-        if (!data) {
-          setError(true); // 데이터가 없으면 에러 상태로 설정
-        } else {
+        if (!data) setError(true);
+        else {
           setMovieDetail(data);
+          setIsLoading(true);
         }
       })
       .catch(() => setError(true));
   }, [movieId]);
+  // movieId 존재하지 않을시 에러 발생
+  useEffect(() => {
+    getMovieGenres().then((data) => {
+      setGenre(data);
+    });
+  }, []);
+  // 장르 데이터 가지고 옴
+
   if (error) return <div>에러가 발생했습니다.</div>;
-  if (!movieDetail || movieDetail.id !== numMovieId)
-    // movieDetail이 아직 설정되지 않았거나 ID가 일치하지 않는 경우
-    return <div>영화 정보가 없습니다.</div>;
-  else {
-    // movieDetail이 설정되고 ID가 일치하는 경우
-    return (
-      <Container
-        $border={mode === "light" ? "1px solid lightgray" : "1px solid white"}
-        $boxshadow={
-          mode === "light" ? "0 8px 24px #0000001a" : "0 0 24px white"
-        }
-      >
-        <Img src={pathUrl} alt={movieDetail.title} />
-        <Text>
-          <Title $color={mode === "light" ? "black" : "white"}>
-            {movieDetail.title}
-          </Title>
-          <Average $color={mode === "light" ? "black" : "white"}>
-            ⭐️ {movieDetail.average}
-          </Average>
-          <GenreCont>
-            {movieDetail.genres.map((val) => {
-              return <Genre key={val}>{val}</Genre>;
-            })}
-          </GenreCont>
-          <Script $color={mode === "light" ? "black" : "white"}>
-            {movieDetail.overView}
-          </Script>
-        </Text>
-      </Container>
-    );
-  }
+  return (
+    <>
+      {!isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        movieDetail
+          .filter((detail) => detail.id === numMovieId)
+          .map((val) => (
+            <Container
+              key={val.id}
+              $border={
+                mode === "light" ? "1px solid lightgray" : "1px solid white"
+              }
+              $boxshadow={
+                mode === "light" ? "0 8px 24px #0000001a" : "0 0 24px white"
+              }
+            >
+              {/* 이미지 로딩상태에 따른 스켈레톤 구현 */}
+              {!imgLoading && <DetailImgSkeleton />}
+              <Img
+                src={imageBaseUrl + val.poster_path}
+                alt={val.title}
+                onLoad={() => setImgLoading(true)}
+                style={{ display: imgLoading ? "block" : "none" }}
+              />
+              <Text>
+                <Title $color={mode === "light" ? "black" : "white"}>
+                  {val.title}
+                </Title>
+                <Average $color={mode === "light" ? "black" : "white"}>
+                  ⭐️ {val.vote_average}
+                </Average>
+                <GenreCont>
+                  {val.genre_ids.map((genreId) => {
+                    const matched = genre.find((g) => g.id === genreId);
+                    return matched ? (
+                      <Genre key={genreId}>{matched.name}</Genre>
+                    ) : null;
+                  })}
+                </GenreCont>
+                <Script $color={mode === "light" ? "black" : "white"}>
+                  {val.overview}
+                </Script>
+                <Date $color={mode === "light" ? "black" : "white"}>
+                  출시일 : {val.release_date}
+                </Date>
+              </Text>
+            </Container>
+          ))
+      )}
+    </>
+  );
 }
+
 export default MovieDetail;
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   margin: 30px 5%;
   padding: 40px;
@@ -89,6 +125,7 @@ const Average = styled.p`
 const Script = styled.p`
   font-size: 1rem;
   color: ${(props) => props.$color};
+  line-height: 28px;
 `;
 const GenreCont = styled.div`
   display: flex;
@@ -100,4 +137,10 @@ const Genre = styled.p`
   color: #1a3c6b;
   font-size: 13px;
   border-radius: 20px;
+`;
+const Date = styled.p`
+  position: absolute;
+  bottom: 40px;
+  font-size: 0.9rem;
+  color: ${(props) => props.$color};
 `;

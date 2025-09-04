@@ -1,10 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import ModeContext from "@/context/ModeContext";
+import CardImgSkeleton from "@/components/common/CardImgSkeleton";
 function MovieCard({ title, vote_average, poster_path, onClick }) {
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
   poster_path = imageBaseUrl + poster_path;
   const { mode } = useContext(ModeContext);
+  const [imgLoading, setImgLoading] = useState(false);
   return (
     <Card
       onClick={onClick}
@@ -16,7 +18,14 @@ function MovieCard({ title, vote_average, poster_path, onClick }) {
         mode === "light" ? "0 8px 16px #00000033" : "0 3px 16px white"
       }
     >
-      <Img src={poster_path} alt={title} />
+      {/* 이미지 로딩상태에 따라 스켈레톤 구현 */}
+      {!imgLoading && <CardImgSkeleton />}
+      <Img
+        src={poster_path}
+        alt={title}
+        onLoad={() => setImgLoading(true)}
+        style={{ display: imgLoading ? "block" : "none" }}
+      />
       <Title $color={mode === "light" ? "black" : "white"}>{title}</Title>
       <Average $color={mode === "light" ? "gray" : "white"}>
         ⭐️ {vote_average}
@@ -29,6 +38,7 @@ export default MovieCard;
 const Card = styled.div`
   display: flex;
   flex-direction: column;
+  width: 222px;
   padding: 10px;
   gap: 10px;
   border-radius: 8px;
