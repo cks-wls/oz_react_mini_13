@@ -34,9 +34,9 @@ function Main() {
   const filteredMovies =
     query === ""
       ? movieList // 검색창이 비어있으면 전체 영화
-      : debounce
-      ? fuse.search(query).map((result) => result.item)
-      : [];
+      : debounce // 검색을 하고 디바운스가 완료 되었을때
+      ? fuse.search(query).map((result) => result.item) // 결과를 매핑
+      : []; // 빈배열 리턴
   return (
     <>
       {/* API 로딩 상태에 따라 로딩 인디케이터 구현 */}
