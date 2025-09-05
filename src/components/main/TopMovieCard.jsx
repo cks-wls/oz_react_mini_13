@@ -40,7 +40,7 @@ function TopMovieCard() {
       </SectionTitle>
       <Swiper
         modules={[Navigation, Pagination]}
-        spaceBetween={90}
+        spaceBetween={85}
         slidesPerView={4}
         navigation
       >
