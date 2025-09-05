@@ -53,7 +53,7 @@ const Card = styled.div`
 `;
 const Img = styled.img`
   width: 200px;
-  height: 250px;
+  height: 300px;
   border-radius: 8px;
 `;
 const Title = styled.h2`
