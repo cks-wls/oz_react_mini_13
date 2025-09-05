@@ -2,15 +2,35 @@ import styled from "styled-components";
 import moon from "@/assets/icons/moon.png";
 import sun from "@/assets/icons/sun.png";
 import ModeContext from "@/context/ModeContext";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 function NavBar() {
   const { mode, toggleMode } = useContext(ModeContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  useEffect(() => {
+    if (search) {
+      setSearchParams({ movies: search });
+    } else {
+      setSearchParams({});
+    }
+  }, [search]);
   return (
     <Container $bgcolor={mode === "light" ? "black" : "#1c1c1c"}>
-      <Title onClick={() => navigate("/")}>OZ MOVIE</Title>
-      <Search placeholder="검색어를 입력해주세요" />
+      <Title
+        onClick={() => {
+          navigate("/");
+          setSearch("");
+        }}
+      >
+        OZ MOVIE
+      </Title>
+      <Search
+        placeholder="검색어를 입력해주세요"
+        onChange={(e) => setSearch(e.target.value)}
+        value={search}
+      />
       <LoginContainer>
         <Mode
           onClick={toggleMode}
