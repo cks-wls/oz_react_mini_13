@@ -2,8 +2,10 @@ import styled from "styled-components";
 import getMovieList from "@/lib/api/getMovieList";
 import MovieCard from "@/components/main/MovieCard";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
+import TopMovieCard from "@/components/main/TopMovieCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Main() {
   const [movieList, setMovieList] = useState([]);
   const [error, setError] = useState(false);
@@ -22,19 +24,22 @@ function Main() {
     <>
       {/* API 로딩 상태에 따라 로딩 인디케이터 구현 */}
       {isLoading ? (
-        <Container>
-          {movieList.map((val) => (
-            <MovieCard
-              key={val.id}
-              title={val.title}
-              vote_average={val.vote_average}
-              poster_path={val.poster_path}
-              onClick={() => {
-                navigate(`/movies/${val.id}`);
-              }}
-            />
-          ))}
-        </Container>
+        <>
+          <TopMovieCard />
+          <Container>
+            {movieList.map((val) => (
+              <MovieCard
+                key={val.id}
+                title={val.title}
+                vote_average={val.vote_average}
+                poster_path={val.poster_path}
+                onClick={() => {
+                  navigate(`/movies/${val.id}`);
+                }}
+              />
+            ))}
+          </Container>
+        </>
       ) : (
         <LoadingIndicator />
       )}
