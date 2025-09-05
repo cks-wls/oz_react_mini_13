@@ -1,5 +1,5 @@
 const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-export default async function getMovieList() {
+export default async function getMovieTopRated() {
   try {
     const options = {
       headers: {
@@ -8,7 +8,7 @@ export default async function getMovieList() {
       },
     };
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1",
+      "https://api.themoviedb.org/3/movie/top_rated?language=ko&page=1&region=kr",
       options
     );
 
@@ -28,4 +28,4 @@ export default async function getMovieList() {
     return [];
   }
 }
-//  영화 리스트를 받아오는 API
+//  평점이 높은 영화 리스트를 받아오는 API
