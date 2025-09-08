@@ -2,13 +2,15 @@ import { Routes, Route } from "react-router-dom";
 import Main from "@/pages/main";
 import Layout from "@/layout/layout";
 import MovieDetail from "@/components/main/MovieDetail";
+import Opening from "@/pages/opening";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route path="/" element={<Opening />} />
+      <Route path="/movies" element={<Layout />}>
         <Route index element={<Main />} />
-        <Route path="/movies/:movieId" element={<MovieDetail />} />
+        <Route path=":movieId" element={<MovieDetail />} />
       </Route>
     </Routes>
   );

@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css";
 import ModeContext from "@/context/ModeContext";
-import CardImgSkeleton from "@/components/common/CardImgSkeleton";
+import CardImgSkeleton from "@/components/skeleton/CardImgSkeleton";
 import getMovieTopRated from "@/lib/api/getMovieTopRated";
 import { useNavigate } from "react-router-dom";
 function TopMovieCard() {
@@ -40,9 +40,10 @@ function TopMovieCard() {
       </SectionTitle>
       <Swiper
         modules={[Navigation, Pagination]}
-        spaceBetween={85}
-        slidesPerView={4}
+        spaceBetween={65}
+        slidesPerView="auto"
         navigation
+        style={{ zIndex: 1, paddingLeft: 32 }}
       >
         <CardContainer>
           {topMovie.map((val, index) => {

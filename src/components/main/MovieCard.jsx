@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import ModeContext from "@/context/ModeContext";
-import CardImgSkeleton from "@/components/common/CardImgSkeleton";
+import CardImgSkeleton from "@/components/skeleton/CardImgSkeleton";
 function MovieCard({ title, vote_average, poster_path, onClick }) {
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
   poster_path = imageBaseUrl + poster_path;
@@ -34,7 +34,6 @@ function MovieCard({ title, vote_average, poster_path, onClick }) {
   );
 }
 export default MovieCard;
-
 const Card = styled.div`
   display: flex;
   flex-direction: column;
