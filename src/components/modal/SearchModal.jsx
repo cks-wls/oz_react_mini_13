@@ -1,8 +1,23 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 function SearchModal({ mode }) {
+  const [searchResult, setSearchResult] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => {
+    if (searchResult) {
+      setSearchParams({ movies: searchResult });
+    } else {
+      setSearchParams({});
+    }
+  }, [searchResult]);
   return (
     <Container $bgcolor={mode === "light" ? "black" : "#1c1c1c"}>
-      <Search placeholder="검색어를 입력해주세요" />
+      <Search
+        placeholder="검색어를 입력해주세요"
+        onChange={(e) => setSearchResult(e.target.value)}
+        value={searchResult}
+      />
     </Container>
   );
 }
