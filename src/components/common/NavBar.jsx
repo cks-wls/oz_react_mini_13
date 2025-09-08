@@ -71,7 +71,6 @@ function NavBar() {
   );
 }
 export default NavBar;
-const desktopWidth = "1025px";
 const tabletWidth = "768px";
 
 const Container = styled.div`
