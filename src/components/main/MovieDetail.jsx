@@ -4,7 +4,7 @@ import getMovieDetail from "@/lib/api/getMovieDetail";
 import getMovieGenres from "@/lib/api/getMovieGenres";
 import { useContext, useEffect, useState } from "react";
 import ModeContext from "@/context/ModeContext";
-import DetailImgSkeleton from "@/components/common/DetailImgSkeleton";
+import DetailImgSkeleton from "@/components/skeleton/DetailImgSkeleton";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 
 function MovieDetail() {

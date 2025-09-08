@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css";
 import ModeContext from "@/context/ModeContext";
-import CardImgSkeleton from "@/components/common/CardImgSkeleton";
+import CardImgSkeleton from "@/components/skeleton/CardImgSkeleton";
 import getMovieTopRated from "@/lib/api/getMovieTopRated";
 import { useNavigate } from "react-router-dom";
 function TopMovieCard() {
