@@ -93,21 +93,32 @@ function MovieDetail() {
 }
 
 export default MovieDetail;
-
+const tabletWidth = "768px";
+const desktopWidth = "1025px";
 const Container = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
   margin: 30px 5%;
   padding: 40px;
   gap: 40px;
   box-shadow: ${(props) => props.$boxshadow};
   border-radius: 10px;
   border: ${(props) => props.$border};
+  @media screen and (min-width: ${tabletWidth}) {
+    flex-direction: row;
+  }
 `;
 const Img = styled.img`
-  width: 300px;
-  height: 450px;
+  width: 222px;
+  height: 316px;
+  margin: 0 auto;
   border-radius: 10px;
+  @media screen and (min-width: ${tabletWidth}) {
+    width: 300px;
+    height: 450px;
+    margin: 0;
+  }
 `;
 const Text = styled.div`
   display: flex;
@@ -139,8 +150,10 @@ const Genre = styled.p`
   border-radius: 20px;
 `;
 const Date = styled.p`
-  position: absolute;
-  bottom: 40px;
   font-size: 0.9rem;
   color: ${(props) => props.$color};
+  @media screen and (min-width: ${desktopWidth}) {
+    position: absolute;
+    bottom: 40px;
+  }
 `;

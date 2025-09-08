@@ -40,9 +40,10 @@ function TopMovieCard() {
       </SectionTitle>
       <Swiper
         modules={[Navigation, Pagination]}
-        spaceBetween={85}
-        slidesPerView={4}
+        spaceBetween={65}
+        slidesPerView="auto"
         navigation
+        style={{ zIndex: 1, paddingLeft: 32 }}
       >
         <CardContainer>
           {topMovie.map((val, index) => {
