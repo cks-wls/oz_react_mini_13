@@ -1,9 +1,11 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 function LoginModal({ mode }) {
+  const navigate = useNavigate();
   return (
     <Container $bgcolor={mode === "light" ? "black" : "#1c1c1c"}>
-      <Button>로그인</Button>
-      <Button>회원가입</Button>
+      <Button onClick={() => navigate("/signin")}>로그인</Button>
+      <Button onClick={() => navigate("/signup")}>회원가입</Button>
     </Container>
   );
 }
