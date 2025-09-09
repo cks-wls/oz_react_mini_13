@@ -8,12 +8,17 @@ import LoginModal from "@/components/modal/LoginModal";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import SearchModal from "@/components/modal/SearchModal";
+import LoginContext from "@/context/LoginContext";
+import profile from "@/assets/images/profile.jpg";
+import ProfileModal from "@/components/modal/ProfileModal";
 function NavBar() {
   const { mode, toggleMode } = useContext(ModeContext);
+  const { loginCondition } = useContext(LoginContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     if (search) {
@@ -53,20 +58,35 @@ function NavBar() {
           >
             <Img src={mode === "light" ? moon : sun} alt="modeIcon" />
           </Mode>
-          <Etc
-            src={etc}
-            alt="altIcon"
-            onClick={() => {
-              setSearchOpen(false);
-              setLoginModalOpen((prev) => !prev);
-            }}
-          />
-          <Button>로그인</Button>
-          <Button>회원가입</Button>
+          {!loginCondition && (
+            <Etc
+              src={etc}
+              alt="altIcon"
+              onClick={() => {
+                setSearchOpen(false);
+                setLoginModalOpen((prev) => !prev);
+              }}
+            />
+          )}
+
+          {loginCondition ? (
+            <Profile
+              src={profile}
+              onClick={() => setProfileOpen((prev) => !prev)}
+            />
+          ) : (
+            <>
+              <Button onClick={() => navigate("signin")}>로그인</Button>
+              <Button onClick={() => navigate("signup")}>회원가입</Button>
+            </>
+          )}
         </LoginContainer>
       </Container>
-      {loginModalOpen && <LoginModal mode={mode} />}
+      {!loginCondition && loginModalOpen && (
+        <LoginModal mode={mode} setLoginModalOpen={setLoginModalOpen} />
+      )}
       {searchOpen && <SearchModal mode={mode} />}
+      {profileOpen && <ProfileModal setProfileOpen={setProfileOpen} />}
     </>
   );
 }
@@ -143,4 +163,14 @@ const SearchIcon = styled.img`
   @media screen and (min-width: ${tabletWidth}) {
     display: none;
   }
+`;
+const Profile = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
