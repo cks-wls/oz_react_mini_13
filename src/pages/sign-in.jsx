@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSupabase } from "@/context/SupabaseProvider";
 import { Link, useNavigate } from "react-router-dom";
 import LoginContext from "@/context/LoginContext";
+import ModeContext from "@/context/ModeContext";
 function SignInPage() {
   const supabase = useSupabase();
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function SignInPage() {
     password: false,
   });
   const { loginCondition, setLoginCondition } = useContext(LoginContext);
+  const { mode } = useContext(ModeContext);
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -33,10 +35,15 @@ function SignInPage() {
     navigate("/movies"); // 로그인 후 이동할 페이지
   };
   return (
-    <Container>
-      <Title>로그인</Title>
+    <Container
+      $border={mode === "light" ? "1px solid lightgray" : "1px solid white"}
+      $boxShadow={
+        mode === "light" ? " 0 10px 12px #0000001a" : "0 0 12px white"
+      }
+    >
+      <Title $color={mode === "light" ? "black" : "white"}>로그인</Title>
       <Section>
-        <Item>비밀번호</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>비밀번호</Item>
         <Input
           type="email"
           placeholder="이메일을 입력해주세요"
@@ -53,7 +60,7 @@ function SignInPage() {
         )}
       </Section>
       <Section>
-        <Item>비밀번호</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>비밀번호</Item>
         <Input
           type="password"
           placeholder="비밀번호를 입력해주세요"
@@ -75,9 +82,9 @@ function SignInPage() {
         )}
       </Section>
       <Button onClick={handleSignIn}>로그인</Button>
-      <Guide>
+      <Guide $color={mode === "light" ? "black" : "white"}>
         오즈무비가 처음이신가요?{" "}
-        <Link to="/signup" style={{ textDecoration: "none" }}>
+        <Link to="/signup" style={{ textDecoration: "none", color: "#3b82f6" }}>
           회원가입{" "}
         </Link>
       </Guide>
@@ -85,18 +92,24 @@ function SignInPage() {
   );
 }
 export default SignInPage;
+const tabletWidth = "768px";
 const Container = styled.div`
-  width: 40%;
+  width: 400px;
   margin: 100px auto;
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  box-shadow: 0 4px 12px #0000001a;
+  border: ${(props) => props.$border};
+  box-shadow: ${(props) => props.$boxShadow};
   border-radius: 8px;
+  @media screen and (min-width: ${tabletWidth}) {
+    width: 600px;
+  }
 `;
 const Title = styled.h1`
   text-align: center;
   font-size: 1.8rem;
+  color: ${(props) => props.$color};
 `;
 const Section = styled.div`
   display: flex;
@@ -106,6 +119,7 @@ const Section = styled.div`
 `;
 const Item = styled.h3`
   font-size: 1rem;
+  color: ${(props) => props.$color};
 `;
 const Input = styled.input`
   width: 100%;
@@ -130,4 +144,5 @@ const Button = styled.button`
 `;
 const Guide = styled.p`
   text-align: center;
+  color: ${(props) => props.$color};
 `;

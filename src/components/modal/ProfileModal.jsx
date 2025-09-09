@@ -6,7 +6,7 @@ function ProfileModal({ setProfileOpen }) {
   const { loginCondition, setLoginCondition } = useContext(LoginContext);
   const navigate = useNavigate();
   return (
-    <Container>
+    <Container back>
       <Box>
         <Like onClick={() => navigate("/movies/like")}>관심 목록</Like>
         <Logout
@@ -29,7 +29,7 @@ const Container = styled.div`
 `;
 const Box = styled.div`
   background-color: gray;
-  width: 8%;
+  width: 100px;
   position: relative;
   color: white;
   padding: 10px 0;
@@ -37,7 +37,7 @@ const Box = styled.div`
   flex-direction: column;
   gap: 5px;
   bottom: 10px;
-  right: 80px;
+  right: 50px;
   font-weight: 400;
 `;
 const Like = styled.div`

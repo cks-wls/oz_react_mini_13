@@ -1,11 +1,25 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-function LoginModal({ mode }) {
+function LoginModal({ mode, setLoginModalOpen }) {
   const navigate = useNavigate();
   return (
     <Container $bgcolor={mode === "light" ? "black" : "#1c1c1c"}>
-      <Button onClick={() => navigate("/signin")}>로그인</Button>
-      <Button onClick={() => navigate("/signup")}>회원가입</Button>
+      <Button
+        onClick={() => {
+          navigate("/movies/signin");
+          setLoginModalOpen(false);
+        }}
+      >
+        로그인
+      </Button>
+      <Button
+        onClick={() => {
+          navigate("/movies/signup");
+          setLoginModalOpen(false);
+        }}
+      >
+        회원가입
+      </Button>
     </Container>
   );
 }

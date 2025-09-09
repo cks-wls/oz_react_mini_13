@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useSupabase } from "@/context/SupabaseProvider";
 import { useNavigate } from "react-router-dom";
+import ModeContext from "@/context/ModeContext";
 
 function SignUp() {
   const supabase = useSupabase();
@@ -11,6 +12,7 @@ function SignUp() {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [username, setUserName] = useState("");
+  const { mode } = useContext(ModeContext);
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   // 추후 비밀번호 검사를 위함
   // 유효성 상태
@@ -76,10 +78,15 @@ function SignUp() {
   };
 
   return (
-    <Container>
-      <Title>회원가입</Title>
+    <Container
+      $border={mode === "light" ? "1px solid lightgray" : "1px solid white"}
+      $boxShadow={
+        mode === "light" ? " 0 10px 12px #0000001a" : "0 0 12px white"
+      }
+    >
+      <Title $color={mode === "light" ? "black" : "white"}>회원가입</Title>
       <Section>
-        <Item>이메일</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>이메일</Item>
         <Input
           type="email"
           placeholder="example@domain.com"
@@ -96,7 +103,7 @@ function SignUp() {
         )}
       </Section>
       <Section>
-        <Item>이름</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>이름</Item>
         <Input
           type="text"
           placeholder="이름"
@@ -116,7 +123,7 @@ function SignUp() {
         )}
       </Section>
       <Section>
-        <Item>비밀번호</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>비밀번호</Item>
         <Input
           type="password"
           placeholder="8자 이상. 영어 + 숫자조합 사용"
@@ -139,7 +146,7 @@ function SignUp() {
         )}
       </Section>
       <Section>
-        <Item>비밀번호 확인</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>비밀번호 확인</Item>
         <Input
           type="password"
           placeholder="비밀번호를 한번 더 입력하세요"
@@ -161,7 +168,7 @@ function SignUp() {
         )}
       </Section>
       <Section>
-        <Item>나이</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>나이</Item>
         <Input
           type="text"
           placeholder="나이"
@@ -181,7 +188,7 @@ function SignUp() {
         )}
       </Section>
       <Section>
-        <Item>성별</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>성별</Item>
         <Select
           value={gender}
           onChange={(e) => {
@@ -211,18 +218,24 @@ function SignUp() {
 }
 
 export default SignUp;
+const tabletWidth = "768px";
 const Container = styled.div`
-  width: 40%;
+  width: 400px;
   margin: 100px auto;
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  box-shadow: 0 4px 12px #0000001a;
+  border: ${(props) => props.$border};
+  box-shadow: ${(props) => props.$boxShadow};
   border-radius: 8px;
+  @media screen and (min-width: ${tabletWidth}) {
+    width: 600px;
+  }
 `;
 const Title = styled.h1`
   text-align: center;
   font-size: 1.8rem;
+  color: ${(props) => props.$color};
 `;
 const Section = styled.div`
   display: flex;
@@ -232,6 +245,7 @@ const Section = styled.div`
 `;
 const Item = styled.h3`
   font-size: 1rem;
+  color: ${(props) => props.$color};
 `;
 const Input = styled.input`
   width: 100%;

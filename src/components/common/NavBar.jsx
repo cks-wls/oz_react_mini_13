@@ -58,14 +58,17 @@ function NavBar() {
           >
             <Img src={mode === "light" ? moon : sun} alt="modeIcon" />
           </Mode>
-          <Etc
-            src={etc}
-            alt="altIcon"
-            onClick={() => {
-              setSearchOpen(false);
-              setLoginModalOpen((prev) => !prev);
-            }}
-          />
+          {!loginCondition && (
+            <Etc
+              src={etc}
+              alt="altIcon"
+              onClick={() => {
+                setSearchOpen(false);
+                setLoginModalOpen((prev) => !prev);
+              }}
+            />
+          )}
+
           {loginCondition ? (
             <Profile
               src={profile}
@@ -79,7 +82,9 @@ function NavBar() {
           )}
         </LoginContainer>
       </Container>
-      {loginModalOpen && <LoginModal mode={mode} />}
+      {!loginCondition && loginModalOpen && (
+        <LoginModal mode={mode} setLoginModalOpen={setLoginModalOpen} />
+      )}
       {searchOpen && <SearchModal mode={mode} />}
       {profileOpen && <ProfileModal setProfileOpen={setProfileOpen} />}
     </>
