@@ -1,13 +1,20 @@
 import styled from "styled-components";
 import LoginContext from "@/context/LoginContext";
+import ModeContext from "@/context/ModeContext";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 function ProfileModal({ setProfileOpen }) {
   const { loginCondition, setLoginCondition } = useContext(LoginContext);
+  const { mode } = useContext(ModeContext);
   const navigate = useNavigate();
   return (
-    <Container back>
-      <Box>
+    <Container>
+      <Box
+        $border={mode === "light" ? "1px solid lightgray" : "1px solid white"}
+        $boxShadow={
+          mode === "light" ? " 0 10px 12px #0000001a" : "0 0 12px white"
+        }
+      >
         <Like onClick={() => navigate("/movies/like")}>관심 목록</Like>
         <Logout
           onClick={() => {
@@ -28,7 +35,7 @@ const Container = styled.div`
   justify-content: end;
 `;
 const Box = styled.div`
-  background-color: gray;
+  background-color: #3b3b3b;
   width: 100px;
   position: relative;
   color: white;
@@ -39,12 +46,19 @@ const Box = styled.div`
   bottom: 10px;
   right: 50px;
   font-weight: 400;
+  font-size: 14px;
+  border-radius: 10px;
+  border: ${(props) => props.$border};
+  box-shadow: ${(props) => props.$boxShadow};
+  align-items: center;
 `;
 const Like = styled.div`
+  width: 80%;
   text-align: center;
+  padding-bottom: 5px;
   cursor: pointer;
 `;
 const Logout = styled.div`
-  text-align: center;
   cursor: pointer;
+  color: red;
 `;
