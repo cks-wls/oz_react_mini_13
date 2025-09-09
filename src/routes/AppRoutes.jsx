@@ -6,6 +6,7 @@ import Opening from "@/pages/opening";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
 import Like from "@/pages/like";
+import Profile from "@/pages/profile";
 
 function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ function AppRoutes() {
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="like" element={<Like />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
     </Routes>
   );
