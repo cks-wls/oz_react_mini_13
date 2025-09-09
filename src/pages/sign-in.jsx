@@ -18,20 +18,42 @@ function SignInPage() {
     email: false,
     password: false,
   });
-  const { loginCondition, setLoginCondition } = useContext(LoginContext);
+  const { setLoginCondition, setUserInfo } = useContext(LoginContext);
   const { mode } = useContext(ModeContext);
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   const handleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: authData, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
     if (error) {
       alert("로그인 실패: " + error.message);
       return;
     }
+
+    // 로그인 성공
     alert("로그인 성공!");
     setLoginCondition(true);
+
+    // 유저 auth_id 가져오기
+    const userId = authData.user.id;
+
+    // signup 테이블에서 추가 정보 가져오기
+    const { data: profile, error: profileError } = await supabase
+      .from("signup")
+      .select("username, email")
+      .eq("auth_id", userId)
+      .maybeSingle();
+    if (profileError) {
+      setUserInfo({ username: "", email: authData.user.email });
+    } else if (!profile) {
+      // auth_id로 조회 실패
+      setUserInfo({ username: "", email: authData.user.email });
+    } else {
+      setUserInfo({ username: profile.username, email: profile.email });
+    }
+
     navigate("/movies"); // 로그인 후 이동할 페이지
   };
   return (

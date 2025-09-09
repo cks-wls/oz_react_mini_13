@@ -4,9 +4,11 @@ import ModeContext from "@/context/ModeContext";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 function ProfileModal({ setProfileOpen }) {
-  const { loginCondition, setLoginCondition } = useContext(LoginContext);
+  const { loginCondition, setLoginCondition, userInfo } =
+    useContext(LoginContext);
   const { mode } = useContext(ModeContext);
   const navigate = useNavigate();
+  // console.log(userInfo);
   return (
     <Container>
       <Box
@@ -15,6 +17,7 @@ function ProfileModal({ setProfileOpen }) {
           mode === "light" ? " 0 10px 12px #0000001a" : "0 0 12px white"
         }
       >
+        <Email>{userInfo.email}</Email>
         <Profile
           onClick={() => {
             navigate("/movies/profile");
@@ -51,7 +54,7 @@ const Container = styled.div`
 `;
 const Box = styled.div`
   background-color: #3b3b3b;
-  width: 100px;
+  width: 150px;
   position: relative;
   color: white;
   padding: 10px 0;
@@ -67,8 +70,13 @@ const Box = styled.div`
   box-shadow: ${(props) => props.$boxShadow};
   align-items: center;
 `;
-const Profile = styled.div`
+const Email = styled.div`
   padding-bottom: 5px;
+  border-bottom: 1px solid white;
+`;
+
+const Profile = styled.div`
+  padding: 5px 0;
   cursor: pointer;
 `;
 const Like = styled.div`
