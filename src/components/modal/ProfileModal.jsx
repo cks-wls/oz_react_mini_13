@@ -15,7 +15,22 @@ function ProfileModal({ setProfileOpen }) {
           mode === "light" ? " 0 10px 12px #0000001a" : "0 0 12px white"
         }
       >
-        <Like onClick={() => navigate("/movies/like")}>관심 목록</Like>
+        <Profile
+          onClick={() => {
+            navigate("/movies/profile");
+            setProfileOpen(false);
+          }}
+        >
+          프로필 정보
+        </Profile>
+        <Like
+          onClick={() => {
+            navigate("/movies/like");
+            setProfileOpen(false);
+          }}
+        >
+          관심 목록
+        </Like>
         <Logout
           onClick={() => {
             setLoginCondition(false);
@@ -52,9 +67,11 @@ const Box = styled.div`
   box-shadow: ${(props) => props.$boxShadow};
   align-items: center;
 `;
+const Profile = styled.div`
+  padding-bottom: 5px;
+  cursor: pointer;
+`;
 const Like = styled.div`
-  width: 80%;
-  text-align: center;
   padding-bottom: 5px;
   cursor: pointer;
 `;
