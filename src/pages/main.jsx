@@ -4,28 +4,39 @@ import MovieCard from "@/components/main/MovieCard";
 import LoadingIndicator from "@/components/common/LoadingIndicator";
 import TopMovieCard from "@/components/main/TopMovieCard";
 import Fuse from "fuse.js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useDebounce from "@/lib/hook/useDebounce";
 import DebouncingComponent from "@/components/common/DebouncingComponent";
 import NotExist from "@/components/common/NotExist";
-
+import { useScroll } from "@/lib/hook/useScroll";
+import MovieLoading from "@/components/common/MovieLoading";
 function Main() {
   const [movieList, setMovieList] = useState([]);
+  const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false); // 2초 대기 상태
   const [searchParams] = useSearchParams();
   const query = searchParams.get("movies") || "";
   const debounce = useDebounce(query);
+  const refPages = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
-    getMovieList()
+    if (refPages.current === page) return;
+    refPages.current = page;
+    getMovieList(page)
       .then((data) => {
-        setMovieList(data);
+        setMovieList((prev) => [...prev, ...data]);
         setIsLoading(true);
       })
-      .catch(() => setError(true));
-  }, []);
+      .catch(() => setError(true))
+      .finally(() => setIsWaiting(false));
+  }, [page]);
+  useScroll(() => {
+    setIsWaiting(false); // 2초 대기 UI 시작
+    setPage((prev) => prev + 1); // 실제 데이터 요청
+  }, 1000);
   if (error) return <div>에러가 발생했습니다</div>;
   const fuse = new Fuse(movieList, {
     keys: ["title"],
@@ -67,6 +78,7 @@ function Main() {
               ))
             )}
           </Container>
+          {!isWaiting && <MovieLoading />}
         </>
       ) : (
         <LoadingIndicator />

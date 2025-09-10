@@ -1,39 +1,30 @@
 const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-export default async function getMovieList() {
+export default async function getMovieList(id) {
+  const options = {
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
+    },
+  };
   try {
-    const options = {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
-      },
-    };
+    // 인기 영화
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1",
+      `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
       options
     );
     const data = await response.json();
-    const details = data.results.map(
-      ({
-        id,
-        title,
-        poster_path,
-        overview,
-        vote_average,
-        genre_ids,
-        release_date,
-      }) => ({
-        id,
-        title,
-        poster_path,
-        overview,
-        vote_average,
-        genre_ids,
-        release_date,
-      })
-    );
-    return details;
-  } catch {
-    return [];
+
+    return {
+      id: data.id,
+      title: data.title,
+      poster_path: data.poster_path,
+      overview: data.overview,
+      vote_average: data.vote_average,
+      genre_ids: data.genres?.map((g) => g.id) || [],
+      release_date: data.release_date,
+    };
+  } catch (error) {
+    console.error("getMovieDetail error:", error);
+    return null;
   }
 }
-//  영화 정보를 받아오는 API

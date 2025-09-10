@@ -9,8 +9,7 @@ import LoadingIndicator from "@/components/common/LoadingIndicator";
 
 function MovieDetail() {
   const { movieId } = useParams();
-  const numMovieId = Number(movieId);
-  const [movieDetail, setMovieDetail] = useState([]);
+  const [movieDetail, setMovieDetail] = useState(null);
   const [genre, setGenre] = useState([]);
   const [error, setError] = useState(false);
   const [imgLoading, setImgLoading] = useState(false);
@@ -43,50 +42,48 @@ function MovieDetail() {
       {!isLoading ? (
         <LoadingIndicator />
       ) : (
-        movieDetail
-          .filter((detail) => detail.id === numMovieId)
-          .map((val) => (
-            <Container
-              key={val.id}
-              $border={
-                mode === "light" ? "1px solid lightgray" : "1px solid white"
-              }
-              $boxshadow={
-                mode === "light" ? "0 8px 24px #0000001a" : "0 0 24px white"
-              }
-            >
-              {/* 이미지 로딩상태에 따른 스켈레톤 구현 */}
-              {!imgLoading && <DetailImgSkeleton />}
-              <Img
-                src={imageBaseUrl + val.poster_path}
-                alt={val.title}
-                onLoad={() => setImgLoading(true)}
-                style={{ display: imgLoading ? "block" : "none" }}
-              />
-              <Text>
-                <Title $color={mode === "light" ? "black" : "white"}>
-                  {val.title}
-                </Title>
-                <Average $color={mode === "light" ? "black" : "white"}>
-                  ⭐️ {val.vote_average}
-                </Average>
-                <GenreCont>
-                  {val.genre_ids.map((genreId) => {
-                    const matched = genre.find((g) => g.id === genreId);
-                    return matched ? (
-                      <Genre key={genreId}>{matched.name}</Genre>
-                    ) : null;
-                  })}
-                </GenreCont>
-                <Script $color={mode === "light" ? "black" : "white"}>
-                  {val.overview}
-                </Script>
-                <Date $color={mode === "light" ? "black" : "white"}>
-                  출시일 : {val.release_date}
-                </Date>
-              </Text>
-            </Container>
-          ))
+        movieDetail && (
+          <Container
+            key={movieDetail.id}
+            $border={
+              mode === "light" ? "1px solid lightgray" : "1px solid white"
+            }
+            $boxshadow={
+              mode === "light" ? "0 8px 24px #0000001a" : "0 0 24px white"
+            }
+          >
+            {/* 이미지 로딩상태에 따른 스켈레톤 구현 */}
+            {!imgLoading && <DetailImgSkeleton />}
+            <Img
+              src={imageBaseUrl + movieDetail.poster_path}
+              alt={movieDetail.title}
+              onLoad={() => setImgLoading(true)}
+              style={{ display: imgLoading ? "block" : "none" }}
+            />
+            <Text>
+              <Title $color={mode === "light" ? "black" : "white"}>
+                {movieDetail.title}
+              </Title>
+              <Average $color={mode === "light" ? "black" : "white"}>
+                ⭐️ {movieDetail.vote_average}
+              </Average>
+              <GenreCont>
+                {movieDetail.genre_ids.map((genreId) => {
+                  const matched = genre.find((g) => g.id === genreId);
+                  return matched ? (
+                    <Genre key={genreId}>{matched.name}</Genre>
+                  ) : null;
+                })}
+              </GenreCont>
+              <Script $color={mode === "light" ? "black" : "white"}>
+                {movieDetail.overview}
+              </Script>
+              <Date $color={mode === "light" ? "black" : "white"}>
+                출시일 : {movieDetail.release_date}
+              </Date>
+            </Text>
+          </Container>
+        )
       )}
     </>
   );
