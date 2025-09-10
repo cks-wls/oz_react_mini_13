@@ -65,7 +65,7 @@ function SignInPage() {
     >
       <Title $color={mode === "light" ? "black" : "white"}>로그인</Title>
       <Section>
-        <Item $color={mode === "light" ? "black" : "white"}>비밀번호</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>이메일</Item>
         <Input
           type="email"
           placeholder="이메일을 입력해주세요"
