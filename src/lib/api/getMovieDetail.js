@@ -1,18 +1,26 @@
 const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 export default async function getMovieList() {
+  const options = {
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
+    },
+  };
   try {
-    const options = {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
-      },
-    };
-    const response = await fetch(
+    // 인기 영화
+    const popularResponse = await fetch(
       "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1",
       options
     );
-    const data = await response.json();
-    const details = data.results.map(
+    const popularData = await popularResponse.json();
+
+    const rankedResponse = await fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=1",
+      options
+    );
+    const rankedData = await rankedResponse.json();
+
+    const details = [...popularData.results, ...rankedData.results].map(
       ({
         id,
         title,
