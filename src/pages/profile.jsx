@@ -1,35 +1,41 @@
 import styled from "styled-components";
 import LoginContext from "@/context/LoginContext";
 import ModeContext from "@/context/ModeContext";
-import { useContext } from "react";
-import profileImg from "@/assets/images/profile.jpg";
+import { useContext, useState } from "react";
+import ProfileChangeModal from "@/components/modal/ProfileChangeModal";
+import ProfileContext from "@/context/ProfileContext";
 function Profile() {
   const { userInfo } = useContext(LoginContext);
   const { mode } = useContext(ModeContext);
+  const { profileSelect } = useContext(ProfileContext);
+  const [editPress, setEditPress] = useState(false);
   return (
-    <Container>
-      <ImgCont>
-        <Img
-          src={profileImg}
-          $border={mode === "light" ? "none" : "1px solid white"}
-        />
-        <Button>Edit</Button>
-      </ImgCont>
-      <TextContainer>
-        <EmailCont $color={mode === "light" ? "black" : "white"}>
-          이메일
-          <Email $color={mode === "light" ? "black" : "white"}>
-            {userInfo.email}
-          </Email>
-        </EmailCont>
-        <NameCont $color={mode === "light" ? "black" : "white"}>
-          이름
-          <Name $color={mode === "light" ? "black" : "white"}>
-            {userInfo.username}
-          </Name>
-        </NameCont>
-      </TextContainer>
-    </Container>
+    <>
+      {editPress && <ProfileChangeModal setEditPress={setEditPress} />}
+      <Container $opacity={editPress ? "0.2" : "1"}>
+        <ImgCont>
+          <Img
+            src={profileSelect}
+            $border={mode === "light" ? "none" : "1px solid white"}
+          />
+          <Button onClick={() => setEditPress(true)}>Edit</Button>
+        </ImgCont>
+        <TextContainer>
+          <EmailCont $color={mode === "light" ? "black" : "white"}>
+            이메일
+            <Email $color={mode === "light" ? "black" : "white"}>
+              {userInfo.email}
+            </Email>
+          </EmailCont>
+          <NameCont $color={mode === "light" ? "black" : "white"}>
+            이름
+            <Name $color={mode === "light" ? "black" : "white"}>
+              {userInfo.username}
+            </Name>
+          </NameCont>
+        </TextContainer>
+      </Container>
+    </>
   );
 }
 export default Profile;
@@ -39,6 +45,7 @@ const Container = styled.div`
   align-items: center;
   height: 90vh;
   gap: 100px;
+  opacity: ${(props) => props.$opacity};
 `;
 const ImgCont = styled.div`
   display: flex;
@@ -56,7 +63,7 @@ const Button = styled.button`
   cursor: pointer;
   width: 90px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid lightgray;
   position: absolute;
   bottom: 0;
   right: 10px;

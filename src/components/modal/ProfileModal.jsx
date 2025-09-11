@@ -7,7 +7,6 @@ function ProfileModal({ setProfileOpen }) {
   const { setLoginCondition, userInfo } = useContext(LoginContext);
   const { mode } = useContext(ModeContext);
   const navigate = useNavigate();
-  console.log(userInfo);
   return (
     <Container>
       <Box
@@ -40,6 +39,7 @@ function ProfileModal({ setProfileOpen }) {
             setLoginCondition(false);
             alert("로그아웃 되었습니다.");
             setProfileOpen(false);
+            navigate("/movies");
           }}
         >
           로그아웃
