@@ -1,5 +1,5 @@
 const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-export default async function getMovieList() {
+export default async function getMovieList(page) {
   try {
     const options = {
       headers: {
@@ -8,7 +8,7 @@ export default async function getMovieList() {
       },
     };
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1",
+      `https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`,
       options
     );
 

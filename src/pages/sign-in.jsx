@@ -26,10 +26,11 @@ function SignInPage() {
       email,
       password,
     });
-
-    if (error) {
-      alert("로그인 실패: " + error.message);
-      return;
+    if (error || !authData?.user) {
+      alert(
+        "로그인 실패: " + (error?.message || "유저 정보를 가져올 수 없습니다")
+      );
+      return; // 여기서 종료
     }
 
     // 로그인 성공
@@ -38,17 +39,14 @@ function SignInPage() {
 
     // 유저 auth_id 가져오기
     const userId = authData.user.id;
-
+    console.log(userId);
     // signup 테이블에서 추가 정보 가져오기
-    const { data: profile, error: profileError } = await supabase
+    const { data: profileArray } = await supabase
       .from("signup")
       .select("username, email")
-      .eq("auth_id", userId)
-      .maybeSingle();
-    if (profileError) {
-      setUserInfo({ username: "", email: authData.user.email });
-    } else if (!profile) {
-      // auth_id로 조회 실패
+      .eq("auth_id", userId);
+    const profile = profileArray?.[0]; // 첫 번째 객체 가져오기
+    if (!profile) {
       setUserInfo({ username: "", email: authData.user.email });
     } else {
       setUserInfo({ username: profile.username, email: profile.email });
@@ -65,7 +63,7 @@ function SignInPage() {
     >
       <Title $color={mode === "light" ? "black" : "white"}>로그인</Title>
       <Section>
-        <Item $color={mode === "light" ? "black" : "white"}>비밀번호</Item>
+        <Item $color={mode === "light" ? "black" : "white"}>이메일</Item>
         <Input
           type="email"
           placeholder="이메일을 입력해주세요"

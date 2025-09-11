@@ -74,6 +74,7 @@ function SignUp() {
       alert(`회원가입 실패`);
     } else {
       alert("회원가입 성공!");
+      navigate("/movies/signin");
     }
   };
 
