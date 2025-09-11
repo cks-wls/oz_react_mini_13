@@ -9,7 +9,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import SearchModal from "@/components/modal/SearchModal";
 import LoginContext from "@/context/LoginContext";
-import profile from "@/assets/images/profile.jpg";
+import ProfileContext from "@/context/ProfileContext";
 import ProfileModal from "@/components/modal/ProfileModal";
 function NavBar() {
   const { mode, toggleMode } = useContext(ModeContext);
@@ -19,6 +19,7 @@ function NavBar() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const { profileSelect } = useContext(ProfileContext);
   const navigate = useNavigate();
   useEffect(() => {
     if (search) {
@@ -71,7 +72,7 @@ function NavBar() {
 
           {loginCondition ? (
             <Profile
-              src={profile}
+              src={profileSelect}
               onClick={() => setProfileOpen((prev) => !prev)}
             />
           ) : (
