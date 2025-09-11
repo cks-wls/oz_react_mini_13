@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { profileVarious } from "@/consts/ProfileVarious";
 import { useContext } from "react";
 import ProfileContext from "@/context/ProfileContext";
+import ModeContext from "@/context/ModeContext";
 function ProfileChangeModal({ setEditPress }) {
   const { profileSelect, setProfileSelect } = useContext(ProfileContext);
+  const { mode } = useContext(ModeContext);
   return (
     <Container>
       <Button onClick={() => setEditPress(false)}>Save</Button>
-      <Box>
+      <Box $border={mode === "light" ? "1px solid black" : "1px solid white"}>
         {profileVarious.map((val) => (
           <ProfileWrapper key={val} onClick={() => setProfileSelect(val)}>
             <ProfileImg
@@ -35,8 +37,10 @@ const Container = styled.div`
   z-index: 1;
 `;
 const Box = styled.div`
-  border: 1px solid black;
+  border: ${(props) => props.$border};
   padding: 80px;
+  gap: 10px;
+  border-radius: 10px;
 `;
 const ProfileImg = styled.img`
   width: 100px;
@@ -44,6 +48,7 @@ const ProfileImg = styled.img`
   border-radius: 50%;
   opacity: ${(props) => props.$opacity};
   cursor: pointer;
+  margin-left: 20px;
 `;
 const ProfileWrapper = styled.div`
   position: relative;
