@@ -78,7 +78,7 @@ function Main() {
               ))
             )}
           </Container>
-          {!isWaiting && <MovieLoading />}
+          {!isWaiting && !query && <MovieLoading />}
         </>
       ) : (
         <LoadingIndicator />
